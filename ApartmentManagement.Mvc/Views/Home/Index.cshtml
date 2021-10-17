@@ -1,0 +1,38 @@
+﻿@using ApartmentManagement.Mvc.Controllers
+@model IPagedList<GetInvoiceDetailDto>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>AmountPayable</th>
+            <th>ApartmentName</th>
+            <th>DueDate</th>
+            <th>InvoiceTypeName</th>
+            <th>IsPaid</th>
+            <th>Owner</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model.Items)
+        {
+            <tr>
+                <th>@invoice.Id</th>
+                <th>@invoice.AmountPayable</th>
+                <th>@invoice.ApartmentName</th>
+                <th>@(invoice.DueDate.ToString("D"))</th>
+                <th>@invoice.InvoiceTypeName</th>
+                <th>@(invoice.IsPaid ? "√" : "X")</th>
+                <th>@invoice.Owner</th>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.HasPreviousPage)
+{
+    @Html.ActionLink("Previous page", "Index", "Home", new { page = Model.PageNumber - 1 }, new { @class = "btn btn-block" })
+}
+@if (Model.HasNextPage)
+{
+    @Html.ActionLink("Next page", "Index", "Home", new { page = Model.PageNumber + 1 }, new { @class = "btn btn-block" })
+}

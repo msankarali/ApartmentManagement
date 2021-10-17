@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="EntityValidator\ChatGroup\" />
+    <Folder Include="EntityValidator\Invoice\" />
+    <Folder Include="EntityValidator\InvoiceType\" />
+    <Folder Include="EntityValidator\Manager\" />
+    <Folder Include="EntityValidator\Message\" />
+    <Folder Include="Validators\Abstract\" />
+    <Folder Include="Validators\Concrete\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
+    <PackageReference Include="Mapster" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApartmentManagement.DataAccess\ApartmentManagement.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
