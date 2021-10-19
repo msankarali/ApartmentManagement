@@ -11,5 +11,6 @@ namespace ApartmentManagement.Business.Business.Abstract
         IResult Add(AddApartmentDto addApartmentDto);
         IResult AssignOccupant(AssignOccupantDto assignOccupantDto);
         IDataResult<List<Apartment>> GetAll();
+        IDataResult<List<GetApartmentDetailDto>> GetAllOwnedApartments();
     }
 }

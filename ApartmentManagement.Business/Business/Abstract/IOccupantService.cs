@@ -10,5 +10,6 @@ namespace ApartmentManagement.Business.Business.Abstract
         IDataResult<List<GetOccupantDto>> GetAll();
         IResult UpdateOccupant(UpdateOccupantDto updateOccupantDto);
         IResult DeleteOccupantById(int id);
+        IDataResult<GetOccupantInfoDto> GetOccupantInfoDto();
     }
 }

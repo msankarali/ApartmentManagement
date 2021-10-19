@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ApartmentManagement.Business.Business.Abstract;
 using ApartmentManagement.Business.EntityValidator.Apartment;
 using ApartmentManagement.DataAccess.Abstract;
@@ -52,5 +53,12 @@ namespace ApartmentManagement.Business.Business.Concrete
         public IDataResult<List<Apartment>> GetAll() =>
             new DataResult<List<Apartment>>(ResultType.Success, _apartmentDal.GetAll(ignoreQueryFilters: true));
 
+        public IDataResult<List<GetApartmentDetailDto>> GetAllOwnedApartments()
+        {
+            return new DataResult<List<GetApartmentDetailDto>>(ResultType.Success,
+                _apartmentDal
+                    .GetAll(orderBy: aq => aq.OrderByDescending(a => a.Id))
+                    .Adapt<List<GetApartmentDetailDto>>());
+        }
     }
 }

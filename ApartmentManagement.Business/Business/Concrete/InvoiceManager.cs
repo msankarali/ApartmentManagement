@@ -6,6 +6,7 @@ using ApartmentManagement.Entities.Dtos.Invoice;
 using ApartmentManagement.Entities.Models;
 using Core.Entities.PagedList;
 using Core.Utilities.Results;
+using Core.Utilities.UserManagement;
 using Core.Utilities.Validators;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
@@ -52,11 +53,36 @@ namespace ApartmentManagement.Business.Business.Concrete
                     enableTracking: false,
                     include: iq => iq
                         .Include(i => i.Apartment)
-                        .ThenInclude(a => a.Occupant)
+                            .ThenInclude(a => a.Occupant)
                         .Include(i => i.InvoiceType),
                     pageNumber: pageNumber,
                     pageSize: 10
                 ));
+        }
+
+        public IDataResult<IPagedList<GetInvoiceDetailDto>> GetOccupantInvoiceDetails(int pageNumber = 0)
+        {
+            return new DataResult<IPagedList<GetInvoiceDetailDto>>(ResultType.Success, _invoiceDal.GetAllPagedSelect(
+                selector: i => new GetInvoiceDetailDto
+                {
+                    Id = i.Id,
+                    AmountPayable = i.AmountPayable,
+                    DueDate = i.DueDate,
+                    ApartmentName = $"Blok: {i.Apartment.Block}, Kat: {i.Apartment.Floor}, Kapi: {i.Apartment.Door}",
+                    InvoiceTypeName = i.InvoiceType.Name,
+                    IsPaid = i.IsPaid,
+                    Owner = i.Apartment.Occupant.FullName
+                },
+                predicate: i => i.Apartment.OccupantId == CurrentUser.Id,
+                orderBy: iq => iq.OrderByDescending(i => i.DueDate),
+                enableTracking: false,
+                include: iq => iq
+                    .Include(i => i.Apartment)
+                    .ThenInclude(a => a.Occupant)
+                    .Include(i => i.InvoiceType),
+                pageNumber: pageNumber,
+                pageSize: 10
+            ));
         }
     }
 }

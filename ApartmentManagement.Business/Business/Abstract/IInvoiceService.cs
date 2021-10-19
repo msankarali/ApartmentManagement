@@ -9,5 +9,6 @@ namespace ApartmentManagement.Business.Business.Abstract
     {
         IResult AddInvoices(AddInvoiceDto addInvoiceDto);
         IDataResult<IPagedList<GetInvoiceDetailDto>> GetInvoiceDetails(int pageNumber = 0);
+        IDataResult<IPagedList<GetInvoiceDetailDto>> GetOccupantInvoiceDetails(int pageNumber = 0);
     }
 }

@@ -7,6 +7,7 @@ using ApartmentManagement.Entities.Dtos.Occupant;
 using ApartmentManagement.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security;
+using Core.Utilities.UserManagement;
 using Core.Utilities.Validators;
 using Mapster;
 using MapsterMapper;
@@ -80,6 +81,12 @@ namespace ApartmentManagement.Business.Business.Concrete
 
             return new Result(ResultType.Success)
                 .AddMessage("Kullanıcı silindi");
+        }
+
+        public IDataResult<GetOccupantInfoDto> GetOccupantInfoDto()
+        {
+            return new DataResult<GetOccupantInfoDto>(ResultType.Success,
+                _occupantDal.GetFirst(o => o.Id == CurrentUser.Id).Adapt<GetOccupantInfoDto>());
         }
     }
 }
