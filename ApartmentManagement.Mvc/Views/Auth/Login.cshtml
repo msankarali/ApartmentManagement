@@ -1,0 +1,9 @@
+﻿@model ApartmentManagement.Entities.Dtos.Authentication.LoginDto
+
+@using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "selam" }))
+{
+    <b>@Html.ValidationSummary()</b>
+    <p>@Html.TextBoxFor(x => x.Email)</p>
+    <p>@Html.PasswordFor(x => x.Password)</p>
+    <button type="submit">Login</button>
+}

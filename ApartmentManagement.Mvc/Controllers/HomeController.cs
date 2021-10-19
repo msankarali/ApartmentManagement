@@ -7,7 +7,7 @@ using ApartmentManagement.Business.Business.Abstract;
 
 namespace ApartmentManagement.Mvc.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IInvoiceService _invoiceService;
 

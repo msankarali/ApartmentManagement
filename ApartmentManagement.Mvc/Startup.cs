@@ -14,6 +14,7 @@ using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.DataAccess.Concrete.EntityFramework;
 using ApartmentManagement.DataAccess.Concrete.EntityFramework.Contexts;
 using Core.Utilities.IoC;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentManagement.Mvc
@@ -36,6 +37,15 @@ namespace ApartmentManagement.Mvc
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
             });
 
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/login";
+                    options.LogoutPath = "/logout";
+                });
+
             services.ConfigureServices();
             ServiceTool.Create(services);
         }
@@ -56,6 +66,7 @@ namespace ApartmentManagement.Mvc
 
             app.UseRouting();
 
+            app.UseAuthorization();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

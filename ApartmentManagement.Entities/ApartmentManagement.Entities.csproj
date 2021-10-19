@@ -12,6 +12,7 @@
     <Folder Include="Dtos\InvoiceType\" />
     <Folder Include="Dtos\Manager\" />
     <Folder Include="Dtos\Message\" />
+    <Folder Include="Dtos\Authentication\" />
   </ItemGroup>
 
 </Project>
