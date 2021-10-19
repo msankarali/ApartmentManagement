@@ -7,7 +7,16 @@ namespace ApartmentManagement.Business.EntityValidator.Apartment
     {
         public AddApartmentDtoValidator()
         {
-            RuleFor(a => a.Block)
+            RuleFor(x => x.Block)
+                .MinimumLength(1)
+                .MaximumLength(50);
+            RuleFor(x => x.Door)
+                .MinimumLength(1)
+                .MaximumLength(50);
+            RuleFor(x => x.Floor)
+                .MinimumLength(1)
+                .MaximumLength(100);
+            RuleFor(x => x.Type)
                 .MinimumLength(1)
                 .MaximumLength(50);
         }

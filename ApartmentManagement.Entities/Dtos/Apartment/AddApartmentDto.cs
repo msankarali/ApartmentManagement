@@ -9,7 +9,5 @@ namespace ApartmentManagement.Entities.Dtos.Apartment
         public string Block { get; set; }
         public bool IsAvailable { get; set; }
         public string Type { get; set; }
-        public bool? IsOwner { get; set; }
-        public int? OccupantId { get; set; }
     }
 }

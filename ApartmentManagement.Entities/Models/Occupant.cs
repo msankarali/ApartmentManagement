@@ -16,6 +16,7 @@ namespace ApartmentManagement.Entities.Models
         public bool IsCarOwner { get; set; } = false;
         public string CarPlate { get; set; }
         public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         public bool IsDeleted { get; set; }
 
         public virtual ChatGroup ChatGroup { get; set; }

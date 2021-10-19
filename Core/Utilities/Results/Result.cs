@@ -23,10 +23,10 @@ namespace Core.Utilities.Results
             Messages.Add(message);
             return this;
         }
-        public IResult AddMessage(IEnumerable<string> message)
+        public IResult AddMessage(IEnumerable<string> messages)
         {
             Messages ??= new List<string>();
-            Messages.AddRange(message);
+            Messages.AddRange(messages);
             return this;
         }
     }

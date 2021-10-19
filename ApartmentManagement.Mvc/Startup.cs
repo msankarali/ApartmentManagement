@@ -13,6 +13,7 @@ using ApartmentManagement.Business.Business.Concrete;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.DataAccess.Concrete.EntityFramework;
 using ApartmentManagement.DataAccess.Concrete.EntityFramework.Contexts;
+using Core.Utilities.IoC;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentManagement.Mvc
@@ -36,6 +37,7 @@ namespace ApartmentManagement.Mvc
             });
 
             services.ConfigureServices();
+            ServiceTool.Create(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

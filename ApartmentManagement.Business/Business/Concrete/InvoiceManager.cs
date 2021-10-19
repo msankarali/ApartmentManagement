@@ -55,7 +55,7 @@ namespace ApartmentManagement.Business.Business.Concrete
                         .ThenInclude(a => a.Occupant)
                         .Include(i => i.InvoiceType),
                     pageNumber: pageNumber,
-                    pageSize: 1
+                    pageSize: 10
                 ));
         }
     }

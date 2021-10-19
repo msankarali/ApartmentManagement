@@ -6,6 +6,9 @@ namespace ApartmentManagement.Business.Business.Abstract
 {
     public interface IOccupantService
     {
-        IResult Add(AddOccupantDto addOccupantDto);
+        IDataResult<AddOccupantResultDto> Add(AddOccupantDto addOccupantDto);
+        IDataResult<List<GetOccupantDto>> GetAll();
+        IResult UpdateOccupant(UpdateOccupantDto updateOccupantDto);
+        IResult DeleteOccupantById(int id);
     }
 }

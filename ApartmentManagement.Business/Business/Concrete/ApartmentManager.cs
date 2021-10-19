@@ -1,7 +1,9 @@
-﻿using ApartmentManagement.Business.Business.Abstract;
+﻿using System.Collections.Generic;
+using ApartmentManagement.Business.Business.Abstract;
 using ApartmentManagement.Business.EntityValidator.Apartment;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Dtos.Apartment;
+using ApartmentManagement.Entities.Dtos.Occupant;
 using ApartmentManagement.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Validators;
@@ -30,5 +32,25 @@ namespace ApartmentManagement.Business.Business.Concrete
             return new Result(ResultType.Success)
                 .AddMessage("Daire bilgisi eklendi");
         }
+
+        public IResult AssignOccupant(AssignOccupantDto assignOccupantDto)
+        {
+            var entityValidation = FluentValidator.Validate(typeof(AssignOccupantDtoValidator), assignOccupantDto);
+            if (entityValidation.hasError)
+                return new Result(ResultType.Information)
+                    .AddMessage(entityValidation.errors);
+
+            var apartmentToUpdate = _apartmentDal.GetFirst(a => a.Id == assignOccupantDto.ApartmentId);
+            apartmentToUpdate.OccupantId = assignOccupantDto.OccupantId;
+            apartmentToUpdate.IsOwner = assignOccupantDto.IsOwner;
+
+            _apartmentDal.Update(apartmentToUpdate);
+            return new Result(ResultType.Success)
+                .AddMessage("Kullanıcı ataması başarılı");
+        }
+
+        public IDataResult<List<Apartment>> GetAll() =>
+            new DataResult<List<Apartment>>(ResultType.Success, _apartmentDal.GetAll(ignoreQueryFilters: true));
+
     }
 }

@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\ChatGroup\" />
     <Folder Include="Dtos\InvoiceType\" />
     <Folder Include="Dtos\Manager\" />
     <Folder Include="Dtos\Message\" />

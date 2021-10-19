@@ -10,6 +10,7 @@ namespace ApartmentManagement.Entities.Models
         public int Id { get; set; }
         public string FullName { get; set; }
         public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
 
         public virtual ChatGroup ChatGroup { get; set; }
     }

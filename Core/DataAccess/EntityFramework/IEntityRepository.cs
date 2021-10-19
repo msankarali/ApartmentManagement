@@ -24,7 +24,7 @@ namespace Core.DataAccess.EntityFramework
             bool enableTracking = true,
             bool ignoreQueryFilters = false);
 
-        IReadOnlyList<TEntity> GetAllSelect<TResult>(
+        IReadOnlyList<TResult> GetAllSelect<TResult>(
             Expression<Func<TEntity, TResult>> selector,
             Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,

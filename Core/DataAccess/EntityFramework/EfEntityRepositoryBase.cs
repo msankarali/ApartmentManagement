@@ -51,7 +51,7 @@ namespace Core.DataAccess.EntityFramework
                 : query.ToList();
         }
 
-        public IReadOnlyList<TEntity> GetAllSelect<TResult>(
+        public IReadOnlyList<TResult> GetAllSelect<TResult>(
             Expression<Func<TEntity, TResult>> selector,
             Expression<Func<TEntity, bool>> predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -65,9 +65,11 @@ namespace Core.DataAccess.EntityFramework
             if (predicate != null) query = query.Where(predicate);
             if (selector != null) query = (IQueryable<TEntity>)query.Select(selector).AsQueryable();
             if (ignoreQueryFilters) query = query.IgnoreQueryFilters();
-            return orderBy != null
-                ? orderBy(query).ToList()
-                : query.ToList();
+            if (orderBy != null) query = orderBy(query);
+            var list = new List<TResult>();
+            return selector != null
+                ? new List<TResult>(query.Select(selector))
+                : list;
         }
 
         public IPagedList<TEntity> GetAllPaged(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
