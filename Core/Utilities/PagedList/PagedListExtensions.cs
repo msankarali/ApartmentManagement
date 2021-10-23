@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Core.Entities.PagedList
+namespace Core.Utilities.PagedList
 {
     public static class PagedListExtensions
     {

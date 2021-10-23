@@ -1,0 +1,55 @@
+﻿@model List<ApartmentManagement.Entities.Dtos.Manager.GetManagerDto>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="header">Yöneticilerle iletişim</div>
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Yönetici adı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var manager in Model)
+                        {
+                            <tr onclick="call(@manager.Id, '@manager.FullName')">
+                                <td>@manager.FullName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function call(managerId, name) {
+            $.dialog({
+                title: name,
+                content: function () {
+                    var self = this;
+                    return $.ajax({
+                        url: '/Conversation',
+                        method: 'get',
+                        data: {
+                            managerId: managerId
+                        }
+                    }).done(function (response) {
+                        self.setContent(response);
+                    }).fail(function () {
+                        self.setContent('Something went wrong.');
+                    });
+                }
+            });
+        }
+
+        (function () {
+
+        })();
+    </script>
+}

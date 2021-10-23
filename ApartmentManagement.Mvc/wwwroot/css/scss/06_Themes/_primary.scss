@@ -1,0 +1,21 @@
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+    background-color: #1a2036;
+}
+
+body {
+}
+
+a {
+    text-decoration: none;
+}
+
+.header {
+    text-align: center;
+    font-size: 36px;
+    padding: 14px 0;
+    &:hover {
+        cursor: default;
+    }
+}

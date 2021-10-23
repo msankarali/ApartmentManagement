@@ -1,0 +1,43 @@
+div.table {
+    background-color: #242b42;
+    border-radius: 18px;
+    padding: 30px 40px;
+    overflow-x: auto;
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border-radius: 4px;
+        thead {
+            th {
+                font-weight: 800;
+                padding: 10px;
+            }
+            &:hover {
+                cursor: default;
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    padding: 4px 0;
+                }
+                text-align: center;
+                &:nth-child(odd) {
+                    background-color: #1a2036;
+                }
+                transition: 0.2s;
+                &:hover {
+                    background-color: #b9b9b9;
+                    cursor: pointer;
+                    & td {
+                        color: black;
+                        font-weight: 900;
+                        & i {
+                            color: black;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

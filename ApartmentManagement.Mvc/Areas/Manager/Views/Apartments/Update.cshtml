@@ -1,0 +1,23 @@
+﻿@model ApartmentManagement.Entities.Dtos.Apartment.UpdateApartmentDto
+@{
+    Layout = null;
+}
+
+<form id="form-update-apartment">
+    @Html.HiddenFor(x => x.Id)
+    @Html.TextBoxFor(x => x.Block, new { @class = "cute" })
+    @Html.TextBoxFor(x => x.Door, new { @class = "cute" })
+    @Html.TextBoxFor(x => x.Floor, new { @class = "cute" })
+    @Html.TextBoxFor(x => x.Type, new { @class = "cute" })
+    @Html.CheckBoxFor(x => x.IsAvailable, new { @class = "cute" })
+</form>
+
+<script>
+    $(document).ready(() => {
+        $.post(@Url.Action("Update", "Apartments", new { area = "Manager" }),
+            getFormData('form-update-apartment'),
+            result => {
+                new Result(result).getMessages;
+            });
+    });
+</script>

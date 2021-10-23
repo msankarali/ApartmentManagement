@@ -5,6 +5,7 @@ using ApartmentManagement.Business.EntityValidator.Occupant;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Dtos.Occupant;
 using ApartmentManagement.Entities.Models;
+using Core.Utilities.IoC;
 using Core.Utilities.Results;
 using Core.Utilities.Security;
 using Core.Utilities.UserManagement;
@@ -26,7 +27,9 @@ namespace ApartmentManagement.Business.Business.Concrete
 
         public IDataResult<AddOccupantResultDto> Add(AddOccupantDto addOccupantDto)
         {
-            var entityValidation = FluentValidator.Validate(typeof(AddOccupantDtoValidator), addOccupantDto);
+            var entityValidation = new AddOccupantDtoValidator(
+                ServiceTool.GetService<IOccupantDal>()
+                ).ValidateEntity(addOccupantDto);
             if (entityValidation.hasError)
                 return new DataResult<AddOccupantResultDto>(ResultType.Error)
                     .AddMessage(entityValidation.errors);
@@ -60,13 +63,16 @@ namespace ApartmentManagement.Business.Business.Concrete
 
         public IResult UpdateOccupant(UpdateOccupantDto updateOccupantDto)
         {
-            var entityValidation = FluentValidator.Validate(typeof(UpdateOccupantDtoValidator), updateOccupantDto);
+            var entityValidation = new UpdateOccupantDtoValidator().ValidateEntity(updateOccupantDto);
             if (entityValidation.hasError)
                 return new Result(ResultType.Error)
                     .AddMessage(entityValidation.errors);
 
-            var occupantToUpdate = _occupantDal.GetFirst(o => o.Id == updateOccupantDto.Id);
-            occupantToUpdate.Adapt(updateOccupantDto);
+            var occupantToUpdate = _occupantDal.GetFirst(
+                predicate: o => o.Id == updateOccupantDto.Id,
+                ignoreQueryFilters: true);
+            updateOccupantDto.Adapt(occupantToUpdate);
+
             _occupantDal.Update(occupantToUpdate);
 
             return new Result(ResultType.Success)

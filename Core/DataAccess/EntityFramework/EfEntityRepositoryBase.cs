@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Core.Entities.PagedList;
+using Core.Utilities.PagedList;
 
 namespace Core.DataAccess.EntityFramework
 {

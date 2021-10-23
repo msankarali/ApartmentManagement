@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using ApartmentManagement.Entities.Dtos.Invoice;
-using Core.Entities.PagedList;
+using Core.Utilities.PagedList;
 using Core.Utilities.Results;
 
 namespace ApartmentManagement.Business.Business.Abstract

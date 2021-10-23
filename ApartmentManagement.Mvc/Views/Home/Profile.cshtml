@@ -1,0 +1,66 @@
+﻿@model ProfileModel
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="header">Kullanıcı bilgileri</div>
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>T.C. Kimlik no</th>
+                            <th>İsim soyisim</th>
+                            <th>E-posta</th>
+                            <th>Telefon numarası</th>
+                            <th>Araç bilgisi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.OccupantInfo.IdentityNumber</td>
+                            <td>@Model.OccupantInfo.FullName</td>
+                            <td>@Model.OccupantInfo.Mail</td>
+                            <td>@Model.OccupantInfo.PhoneNumber</td>
+                            <td>@(Model.OccupantInfo.IsCarOwner ? Model.OccupantInfo.CarPlate : "Araç bilgisi yok")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="header">Daire/Konut bilgileri</div>
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bina bilgisi</th>
+                            <th>Tipi</th>
+                            <th>Ev sahibi</th>
+                            <th>Müsaitlik durumu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.OwnedApartments.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    Blok: @Model.OwnedApartments[i].Block,
+                                    Kat: @Model.OwnedApartments[i].Floor,
+                                    Kapı: @Model.OwnedApartments[i].Door
+                                </td>
+                                <td>@Model.OwnedApartments[i].Type</td>
+                                <td><bool bool="@Model.OwnedApartments[i].IsOwner"></bool></td>
+                                <td>@(@Model.OwnedApartments[i].IsAvailable is true ? Html.Raw("<i class=\"fas fa-check\"></i>") : Html.Raw("<i class=\"fas fa-times\"></i>"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

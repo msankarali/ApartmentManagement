@@ -1,0 +1,15 @@
+input {
+    &.cute {
+        background-color: #00000026;
+        border-color: transparent;
+        padding: 13px;
+        border-radius: 12px;
+        min-width: 100px;
+        width: calc(100% - 24px);
+        margin: 10px;
+        box-sizing: border-box;
+        &:focus {
+            outline-style: none;
+        }
+    }
+}

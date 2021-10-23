@@ -32,6 +32,7 @@ namespace ApartmentManagement.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddDbContext<ApartmentManagementDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
@@ -44,7 +45,23 @@ namespace ApartmentManagement.Mvc
                 {
                     options.LoginPath = "/login";
                     options.LogoutPath = "/logout";
+                    options.Cookie.HttpOnly = false;
+                })
+                .AddCookie("manager", "manager", options =>
+                {
+                    options.LoginPath = "/manager/login";
+                    options.LogoutPath = "/manager/logout";
+                    options.Cookie.HttpOnly = false;
                 });
+
+            services.AddCors(options => options.AddDefaultPolicy(policy =>
+                policy
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(origin => true)));
+
+            services.AddSignalR();
 
             services.ConfigureServices();
             ServiceTool.Create(services);
@@ -62,15 +79,26 @@ namespace ApartmentManagement.Mvc
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseRequestLocalization("tr-TR");
+
             app.UseStaticFiles();
+
+            app.UseCors();
 
             app.UseRouting();
 
             app.UseAuthorization();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHubDispatcher>("/chat");
+
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 endpoints.MapDefaultControllerRoute();
             });
         }

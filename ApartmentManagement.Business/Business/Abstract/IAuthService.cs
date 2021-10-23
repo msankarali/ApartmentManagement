@@ -9,6 +9,7 @@ namespace ApartmentManagement.Business.Business.Abstract
 {
     public interface IAuthService
     {
-        IDataResult<Occupant> Login(LoginDto loginDto);
+        IDataResult<Occupant> UserLogin(LoginDto loginDto);
+        IDataResult<Manager> ManagerLogin(LoginDto loginDto);
     }
 }

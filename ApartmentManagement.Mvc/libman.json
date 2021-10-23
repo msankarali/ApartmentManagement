@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.6.0",
+      "destination": "wwwroot/js/jquery/",
+      "files": [
+        "jquery.min.js"
+      ]
+    },
+    {
+      "library": "jquery-confirm@3.3.4",
+      "destination": "wwwroot/css/jquery-confirm/"
+    },
+    {
+      "library": "microsoft-signalr@5.0.11",
+      "destination": "wwwroot/js/microsoft-signalr/",
+      "files": [
+        "signalr.min.js"
+      ]
+    },
+    {
+      "library": "izitoast@1.4.0",
+      "destination": "wwwroot/js/izitoast/",
+      "files": [
+        "iziToast.min.js"
+      ]
+    }
+  ]
+}

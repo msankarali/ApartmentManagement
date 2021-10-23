@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Entities.PagedList
+namespace Core.Utilities.PagedList
 {
     public interface IPagedList<out T>
     {

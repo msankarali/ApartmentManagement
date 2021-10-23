@@ -1,4 +1,5 @@
-﻿using ApartmentManagement.Entities.Models;
+﻿using System.Collections.Generic;
+using ApartmentManagement.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

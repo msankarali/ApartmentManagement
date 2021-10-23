@@ -1,0 +1,35 @@
+@mixin l-breakpoint($breakpoint) {
+    @if map-has-key($map: $grid-breakpoints, $key: $breakpoint) {
+        $breakpoint-value: map-get(
+            $map: $grid-breakpoints,
+            $key: $breakpoint,
+        );
+
+        @media (min-width: $breakpoint-value) {
+            @content;
+        }
+    } @else {
+        @warn "#{$breakpoint} olcumune ait breakpoint bulunamadi!";
+    }
+}
+
+@mixin r-breakpoint($breakpoint) {
+    @if map-has-key($map: $grid-breakpoints, $key: $breakpoint) {
+        $breakpoint-value: map-get(
+            $map: $grid-breakpoints,
+            $key: $breakpoint,
+        );
+
+        @media (max-width: $breakpoint-value) {
+            @content;
+        }
+    } @else {
+        @warn "#{$breakpoint} olcumune ait breakpoint bulunamadi!";
+    }
+}
+
+@mixin sharp-breakpoint($breakpoint) {
+    @media (max-width: $breakpoint) {
+        @content;
+    }
+}

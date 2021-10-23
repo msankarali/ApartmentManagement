@@ -1,0 +1,99 @@
+﻿@using Core.Extensions
+@model ApartmentModel
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="header">Daire/Konut bilgileri</div>
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bina bilgisi</th>
+                            <th>Tipi</th>
+                            <th>Sakin adı</th>
+                            <th>Ev sahibi</th>
+                            <th>Müsaitlik durumu</th>
+                            <th>Silinmiş</th>
+                            <th>Hızlı eylemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var apartment in Model.Apartments)
+                        {
+                            <tr id="@apartment.Id">
+                                <td>
+                                    Blok: @apartment.Block,
+                                    Kat: @apartment.Floor,
+                                    Kapı: @apartment.Door
+                                </td>
+                                <td>@apartment.Type</td>
+                                <td>@apartment.Occupant.FullName</td>
+                                <td><bool bool="apartment.IsOwner"></bool></td>
+                                <td><bool bool="apartment.IsAvailable"></bool></td>
+                                <td deleted><bool bool="apartment.IsDeleted"></bool></td>
+                                <td>
+                                    <button deleted class="cute small" onclick="del(@apartment.ToJsonWithoutNavs())">@(apartment.IsDeleted ? "Geri al" : "Sil")</button>
+                                    <button class="cute small" onclick="edit(@apartment.Id)">Düzenle</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        function del(apartment) {
+            ShowConfirm("Apartman silinmek üzere",
+                `Blok: ${apartment.Block} Kat: ${apartment.Floor} Kapı no: ${apartment.Door} silinmek üzere.<br>İşlemi onaylıyor musunuz?`,
+                () => {
+                    $.post('@Url.Action("Delete", "Apartments", new {area = "Manager"})',
+                        {
+                            apartmentId: apartment.Id
+                        },
+                        function(response) {
+                            new Result(response).getMessages;
+                            if (response.code == 0) {
+                                $('tr[id="' + apartment.Id + '"] td[deleted]').html('<i class=\"fas fa-times\"></i>');
+                                $('tr[id="' + apartment.Id + '"] button[deleted]').html('Sil');
+                            } else if (response.code == 1) {
+                                $('tr[id="' + apartment.Id + '"] td[deleted]').html('<i class=\"fas fa-check\"></i>');
+                                $('tr[id="' + apartment.Id + '"] button[deleted]').html('Geri al');
+                            }
+                        });
+                }, () => {});
+        }
+
+        function edit(apartmentId) {
+            $.get('@Url.Action("Update", "Apartments", new {area = "Manager"})',
+                {
+                    apartmentId: apartmentId
+                },
+                function(response) {
+                    ShowConfirm("Apartman güncelleme", response, () => {
+                        $.post('@Url.Action("Update", "Apartments", new { area = "Manager" })',
+                            getFormData('form-update-apartment'),
+                            result => {
+                                new Result(result).getMessagesFunction(
+                                    () => {
+                                        $('html').click(false);
+                                        setInterval(function() {
+                                            location.reload();
+                                        }, 4000);
+                                    },
+                                    () => {
+
+                                    });
+                            });
+                    }, () => {});
+                });
+        }
+
+    </script>
+}

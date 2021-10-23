@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Entities.Abstract;
-using Core.Entities.PagedList;
+using Core.Utilities.PagedList;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Core.DataAccess.EntityFramework

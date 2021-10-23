@@ -1,9 +1,27 @@
 ﻿@model ApartmentManagement.Entities.Dtos.Authentication.LoginDto
-
-@using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "selam" }))
-{
-    <b>@Html.ValidationSummary()</b>
-    <p>@Html.TextBoxFor(x => x.Email)</p>
-    <p>@Html.PasswordFor(x => x.Password)</p>
-    <button type="submit">Login</button>
+@{
+    Layout = null;
 }
+<!DOCTYPE html>
+
+<html class="login">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/css/theme.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="login">
+        <div>
+            @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "selam" }))
+            {
+                <p>Giriş</p>
+                @Html.ValidationSummary()
+                @Html.TextBoxFor(x => x.Email, new { placeholder = "E-posta" })<br />
+                @Html.PasswordFor(x => x.Password, new { placeholder = "Parola" })
+                <button type="submit">Giriş yap</button>
+            }
+        </div>
+    </div>
+</body>
+</html>

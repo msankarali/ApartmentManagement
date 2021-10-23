@@ -6,9 +6,12 @@ using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Dtos.Apartment;
 using ApartmentManagement.Entities.Dtos.Occupant;
 using ApartmentManagement.Entities.Models;
+using Core.Utilities.IoC;
 using Core.Utilities.Results;
+using Core.Utilities.UserManagement;
 using Core.Utilities.Validators;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentManagement.Business.Business.Concrete
 {
@@ -23,7 +26,7 @@ namespace ApartmentManagement.Business.Business.Concrete
 
         public IResult Add(AddApartmentDto addApartmentDto)
         {
-            var entityValidation = FluentValidator.Validate(typeof(AddApartmentDtoValidator), addApartmentDto);
+            var entityValidation = new AddApartmentDtoValidator().ValidateEntity(addApartmentDto);
             if (entityValidation.hasError)
                 return new Result(ResultType.Error)
                     .AddMessage(entityValidation.errors);
@@ -34,9 +37,30 @@ namespace ApartmentManagement.Business.Business.Concrete
                 .AddMessage("Daire bilgisi eklendi");
         }
 
+        public IResult Update(UpdateApartmentDto updateApartmentDto)
+        {
+            var entityValidation = new UpdateApartmentDtoValidator().ValidateEntity(updateApartmentDto);
+            if (entityValidation.hasError)
+                return new Result(ResultType.Error)
+                    .AddMessage(entityValidation.errors);
+
+            var apartmentToUpdate = _apartmentDal.GetFirst(
+                predicate: a => a.Id == updateApartmentDto.Id,
+                ignoreQueryFilters: true);
+            updateApartmentDto.Adapt(apartmentToUpdate);
+
+            _apartmentDal.Update(apartmentToUpdate);
+
+            return new Result(ResultType.Success)
+                .AddMessage("Daire bilgisi güncellendi");
+        }
+
         public IResult AssignOccupant(AssignOccupantDto assignOccupantDto)
         {
-            var entityValidation = FluentValidator.Validate(typeof(AssignOccupantDtoValidator), assignOccupantDto);
+            var entityValidation = new AssignOccupantDtoValidator(
+                ServiceTool.GetService<IOccupantDal>(),
+                ServiceTool.GetService<IApartmentDal>()
+                ).ValidateEntity(assignOccupantDto);
             if (entityValidation.hasError)
                 return new Result(ResultType.Information)
                     .AddMessage(entityValidation.errors);
@@ -51,14 +75,44 @@ namespace ApartmentManagement.Business.Business.Concrete
         }
 
         public IDataResult<List<Apartment>> GetAll() =>
-            new DataResult<List<Apartment>>(ResultType.Success, _apartmentDal.GetAll(ignoreQueryFilters: true));
+            new DataResult<List<Apartment>>(ResultType.Success, _apartmentDal.GetAll(
+                ignoreQueryFilters: true,
+                include: aq => aq.Include(a => a.Occupant))
+            );
+
+        public Apartment GetById(int apartmentId)
+        {
+            return _apartmentDal.GetFirst(
+                predicate: a => a.Id == apartmentId,
+                ignoreQueryFilters: true);
+        }
 
         public IDataResult<List<GetApartmentDetailDto>> GetAllOwnedApartments()
         {
             return new DataResult<List<GetApartmentDetailDto>>(ResultType.Success,
                 _apartmentDal
-                    .GetAll(orderBy: aq => aq.OrderByDescending(a => a.Id))
+                    .GetAll(
+                        predicate: a => a.OccupantId == CurrentUser.Id,
+                        orderBy: aq => aq.OrderByDescending(a => a.Id))
                     .Adapt<List<GetApartmentDetailDto>>());
+        }
+
+        public IResult SwitchDeleteById(int apartmentId)
+        {
+            var apartmentToUpdate = _apartmentDal.GetFirst(
+                predicate: a => a.Id == apartmentId,
+                ignoreQueryFilters: true);
+            apartmentToUpdate.IsDeleted = !apartmentToUpdate.IsDeleted;
+
+            _apartmentDal.Update(apartmentToUpdate);
+
+            return new Result(ResultType.Success)
+                .AddMessage(apartmentToUpdate.IsDeleted
+                    ? "Apartman başarıyla silindi"
+                    : "Apartman geri alma işlemi başarılı")
+                .WithCode(apartmentToUpdate.IsDeleted
+                    ? 1
+                    : 0);
         }
     }
 }

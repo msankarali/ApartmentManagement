@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Entities.PagedList
+namespace Core.Utilities.PagedList
 {
     public class PagedList<TEntity> : IPagedList<TEntity>
     {

@@ -1,0 +1,31 @@
+select {
+    &.special {
+        font-family: "Arial";
+        display: inline-block;
+        width: 100%;
+        cursor: pointer;
+        padding: 4px 16px;
+        outline: 0;
+        border: 0px solid #000000;
+        border-radius: 6px;
+        background: #c7c7c7;
+        color: #353535;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        &::-ms-expand {
+            display: none;
+        }
+        &:hover,
+        :focus {
+            color: #000000;
+            background: #adadad;
+            border-top-color: #000000;
+        }
+        &:disabled {
+            opacity: 1;
+            pointer-events: none;
+            border-top-color: #cccccc;
+        }
+    }
+}

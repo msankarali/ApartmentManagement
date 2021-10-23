@@ -7,5 +7,6 @@ namespace ApartmentManagement.Business.Business.Abstract
     public interface IChatGroupService
     {
         IDataResult<List<GetChatGroupDetailsDto>> GetChatGroupDetails();
+        int? GetGroupChatIdByManagerId(int managerId);
     }
 }

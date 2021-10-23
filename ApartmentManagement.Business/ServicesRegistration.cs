@@ -36,6 +36,8 @@ namespace ApartmentManagement.Business
 
             services.AddScoped<IAuthService, AuthManager>();
 
+            //services.AddScoped<IChatHubDispatcher, ChatHubDispatcher>();
+
             return services;
         }
     }

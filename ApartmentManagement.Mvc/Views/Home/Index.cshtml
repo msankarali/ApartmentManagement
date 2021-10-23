@@ -1,38 +1,72 @@
 ﻿@using ApartmentManagement.Mvc.Controllers
-@model IPagedList<GetInvoiceDetailDto>
+@model Core.Utilities.PagedList.IPagedList<GetInvoiceDetailDto>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="header">Fatura bilgileri</div>
+            <div class="table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Ödenecek miktar</th>
+                        <th>Bina bilgisi</th>
+                        <th>Son ödeme tarihi</th>
+                        <th>Fatura tipi</th>
+                        <th>Ödendi mi</th>
+                        <th>Ev sahibi</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <br/>
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a asp-controller="Home" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)">
+                                    <i class="fas fa-long-arrow-alt-left"></i>
+                                </a>
+                                @Html.ActionLink("Önceki sayfa", "Index", "Home", new {page = Model.PageNumber - 1}, new {@class = "btn btn-block"})
+                            }
+                            @if (Model.HasPreviousPage && Model.HasNextPage)
+                            {
+                                @: | 
+                            }
+                            @if (Model.HasNextPage)
+                            {
+                                <a asp-controller="Home" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)">
+                                    <i class="fas fa-long-arrow-alt-right"></i>
+                                </a>
+                                @Html.ActionLink("Sonraki sayfa", "Index", "Home", new {page = Model.PageNumber + 1}, new {@class = "btn btn-block"})
+                            }
+                        </td>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    @foreach (var invoice in Model.Items)
+                    {
+                        <tr>
+                            <td>@invoice.AmountPayable</td>
+                            <td>@invoice.ApartmentName</td>
+                            <td>@(invoice.DueDate.ToString("D"))</td>
+                            <td>@invoice.InvoiceTypeName</td>
+                            <td>@(invoice.IsPaid ? Html.Raw("<i class='fas fa-check'></i>") : Html.Raw("<i class='fas fa-times'></i>"))</td>
+                            <td>@invoice.Owner</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
 
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>AmountPayable</th>
-            <th>ApartmentName</th>
-            <th>DueDate</th>
-            <th>InvoiceTypeName</th>
-            <th>IsPaid</th>
-            <th>Owner</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var invoice in Model.Items)
-        {
-            <tr>
-                <th>@invoice.Id</th>
-                <th>@invoice.AmountPayable</th>
-                <th>@invoice.ApartmentName</th>
-                <th>@(invoice.DueDate.ToString("D"))</th>
-                <th>@invoice.InvoiceTypeName</th>
-                <th>@(invoice.IsPaid ? "√" : "X")</th>
-                <th>@invoice.Owner</th>
-            </tr>
-        }
-    </tbody>
-</table>
-@if (Model.HasPreviousPage)
+                <div style="text-align: right;">Sayfa: @(Model.PageNumber + 1)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
 {
-    @Html.ActionLink("Previous page", "Index", "Home", new { page = Model.PageNumber - 1 }, new { @class = "btn btn-block" })
-}
-@if (Model.HasNextPage)
-{
-    @Html.ActionLink("Next page", "Index", "Home", new { page = Model.PageNumber + 1 }, new { @class = "btn btn-block" })
+    <script>
+        (function () {
+
+        })()
+    </script>
 }

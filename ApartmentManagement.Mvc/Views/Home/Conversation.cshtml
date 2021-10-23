@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+
+<div>
+    <input id="message" class="cute" placeholder="Mesaj" />
+</div>
+<div>
+    <button id="btnSend" class="cute">Gönder</button>
+</div>
+
+<div id="chat-messages">
+
+</div>
+
+
+<partial name="_ScriptImports" />
+<script>
+    $(document).ready(() => {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:53361/chat").build();
+
+        connection.start().then(() => {
+            connection.invoke("GetConversation", @ViewBag.chatGroupId);
+        });
+
+        $('#btnSend').click(() => {
+            sendMessage();
+        });
+
+        $('#message').keypress(function (e) {
+            if (e.keyCode === 13) {
+                sendMessage();
+            }
+        });
+
+        connection.on("receiveMessages",
+            (messages) => {
+                $('#chat-messages').html('');
+                messages.forEach(message => {
+                    console.log(message);
+                    $('#chat-messages').append(`
+<div class="card-message">
+    <div class="message">${message.content}</div>
+    <div class="sender-name">${message.createdBy}</div>
+    <div class="date">${message.createdAt}</div>
+</div>
+`);
+                });
+            });
+
+        function sendMessage() {
+            let message = $('#message').val();
+            connection.invoke("SendMessageToManager", @ViewBag.managerId, message)
+                .catch(error => console.log(error))
+                .then(() => {
+                    $('#message').val('');
+                });
+        }
+    });
+</script>

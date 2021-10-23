@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+    <link href="~/css/jquery-confirm/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/css/theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <div class="row gy-4 m-4 gx-1">
+            <div class="col">
+                <button class="sweet" onclick="location.href = '@Url.Action(action: "Index", controller: "Apartments", new { area = "Manager" } )'">Apartman bilgileri</button>
+            </div>
+
+            <div class="col offset-md-1">
+                <button class="sweet" onclick="location.href = '/Profile'">Kullanıcı bilgileri</button>
+            </div>
+            <div class="col offset-md-1">
+                <button class="sweet" onclick="location.href = '/Messages'">Yöneticiye yaz</button>
+            </div>
+        </div>
+    </div>
+
+    <a asp-controller="Auth" asp-action="Logout" asp-area="Manager" class="logout">Logout</a>
+
+    @RenderBody()
+    @await Html.PartialAsync("_ScriptImports")
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+</html>

@@ -10,6 +10,12 @@ namespace Core.Utilities.Results
 
         public List<string> Messages { get; private set; }
 
+        public IResult WithCode(int code)
+        {
+            Code = code;
+            return this;
+        }
+
         public int Code { get; set; }
 
         public Result(ResultType resultType)

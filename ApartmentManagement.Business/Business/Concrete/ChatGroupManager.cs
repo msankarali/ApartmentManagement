@@ -32,5 +32,10 @@ namespace ApartmentManagement.Business.Business.Concrete
                 include: cgq => cgq.Include(cg => cg.Occupant)
             ).ToList());
         }
+
+        public int? GetGroupChatIdByManagerId(int managerId)
+        {
+            return _chatGroupDal.GetFirst(cg => cg.ManagerId == managerId && cg.OccupantId == CurrentUser.Id)?.Id;
+        }
     }
 }

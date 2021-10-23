@@ -4,7 +4,8 @@ using ApartmentManagement.Business.EntityValidator.Invoice;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Dtos.Invoice;
 using ApartmentManagement.Entities.Models;
-using Core.Entities.PagedList;
+using Core.Utilities.IoC;
+using Core.Utilities.PagedList;
 using Core.Utilities.Results;
 using Core.Utilities.UserManagement;
 using Core.Utilities.Validators;
@@ -24,7 +25,9 @@ namespace ApartmentManagement.Business.Business.Concrete
 
         public IResult AddInvoices(AddInvoiceDto addInvoiceDto)
         {
-            var entityValidator = FluentValidator.Validate(typeof(AddInvoiceDtoValidator), addInvoiceDto);
+            var entityValidator = new AddInvoiceDtoValidator(
+                ServiceTool.GetService<IInvoiceTypeDal>()
+                ).ValidateEntity(addInvoiceDto);
             if (entityValidator.hasError)
                 return new Result(ResultType.Error)
                     .AddMessage(entityValidator.errors);
@@ -44,11 +47,12 @@ namespace ApartmentManagement.Business.Business.Concrete
                         Id = i.Id,
                         AmountPayable = i.AmountPayable,
                         DueDate = i.DueDate,
-                        ApartmentName = $"Blok: {i.Apartment.Block}, Kat: {i.Apartment.Floor}, Kapi: {i.Apartment.Door}",
+                        ApartmentName = $"Blok: {i.Apartment.Block}, Kat: {i.Apartment.Floor}, Kapı: {i.Apartment.Door}",
                         InvoiceTypeName = i.InvoiceType.Name,
                         IsPaid = i.IsPaid,
                         Owner = i.Apartment.Occupant.FullName
                     },
+                    predicate: i => i.Apartment.OccupantId == CurrentUser.Id,
                     orderBy: iq => iq.OrderByDescending(i => i.DueDate),
                     enableTracking: false,
                     include: iq => iq
@@ -56,7 +60,7 @@ namespace ApartmentManagement.Business.Business.Concrete
                             .ThenInclude(a => a.Occupant)
                         .Include(i => i.InvoiceType),
                     pageNumber: pageNumber,
-                    pageSize: 10
+                    pageSize: 5
                 ));
         }
 
@@ -68,7 +72,7 @@ namespace ApartmentManagement.Business.Business.Concrete
                     Id = i.Id,
                     AmountPayable = i.AmountPayable,
                     DueDate = i.DueDate,
-                    ApartmentName = $"Blok: {i.Apartment.Block}, Kat: {i.Apartment.Floor}, Kapi: {i.Apartment.Door}",
+                    ApartmentName = $"Blok: {i.Apartment.Block}, Kat: {i.Apartment.Floor}, Kapı: {i.Apartment.Door}",
                     InvoiceTypeName = i.InvoiceType.Name,
                     IsPaid = i.IsPaid,
                     Owner = i.Apartment.Occupant.FullName

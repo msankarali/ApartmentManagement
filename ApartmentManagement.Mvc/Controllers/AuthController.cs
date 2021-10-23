@@ -11,6 +11,8 @@ using Core.Utilities.UserManagement;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.HttpSys;
+using AuthenticationSchemes = System.Net.AuthenticationSchemes;
 
 namespace ApartmentManagement.Mvc.Controllers
 {
@@ -36,7 +38,11 @@ namespace ApartmentManagement.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var result = _authService.Login(loginDto);
+            if (!ModelState.IsValid)
+            {
+                return View(loginDto);
+            }
+            var result = _authService.UserLogin(loginDto);
             if (result.ResultType != ResultType.Success)
             {
                 ModelState.AddModelError("Result", result.Messages[0]);
@@ -47,14 +53,21 @@ namespace ApartmentManagement.Mvc.Controllers
             claims.AddRange(new List<Claim>
             {
                 new(UserInfo.Id, result.Data.Id.ToString()),
-                new(UserInfo.Role.User, "true")
+                new(ClaimTypes.Name, result.Data.FullName),
+                new(UserInfo.Role.Admin, "true")
             });
-            var claimsIdentity = new ClaimsIdentity(claims);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             await _httpContextAccessor.HttpContext!
                 .SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity)
+                    new ClaimsPrincipal(claimsIdentity),
+                    new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.Now.AddDays(1),
+                        IsPersistent = true
+                    }
                 );
 
             return RedirectToAction("Index", "Home");

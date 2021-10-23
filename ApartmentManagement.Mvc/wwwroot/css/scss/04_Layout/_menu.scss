@@ -1,0 +1,6 @@
+.top-menu {
+    padding-bottom: 14px;
+    @include r-breakpoint(md) {
+        display: none;
+    }
+}

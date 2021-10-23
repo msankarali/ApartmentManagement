@@ -1,0 +1,26 @@
+.jconfirm {
+    & .jconfirm-box {
+        background: #2b3043;
+    }
+    & .jconfirm-content {
+        padding: 1px;
+    }
+    & .jconfirm-closeIcon {
+        font-size: 40px !important;
+        top: 17px !important;
+        right: 15px !important;
+    }
+
+    & .jconfirm-buttons {
+        & button {
+            background-color: brown;
+
+            &.btn-yes {
+                color: white;
+            }
+            &.btn-no {
+                color: whitesmoke;
+            }
+        }
+    }
+}

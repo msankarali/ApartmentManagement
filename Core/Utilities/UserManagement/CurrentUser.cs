@@ -9,6 +9,8 @@ namespace Core.Utilities.UserManagement
     {
         private static readonly ClaimsPrincipal User = ServiceTool.GetService<IHttpContextAccessor>().HttpContext.User;
         public static int Id => User.GetUserId();
-        public static bool IsInRole(UserInfo.Role role) => User.IsInRole(role.ToString());
+        public static bool IsInRole(string role) => User.IsInRole(role);
+
+        public static string Name => User.FindFirst(ClaimTypes.Name).Value;
     }
 }

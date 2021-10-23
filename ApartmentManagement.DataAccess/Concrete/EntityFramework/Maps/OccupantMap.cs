@@ -1,4 +1,5 @@
 ﻿using ApartmentManagement.Entities.Models;
+using Core.Utilities.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,6 +30,24 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework.Maps
             builder.Property(e => e.PhoneNumber)
                 .IsRequired()
                 .HasMaxLength(20);
+
+            HashingHelper.CreatePasswordHash("test", out var passwordHash, out var passwordSalt);
+
+            var testOccupant = new Occupant
+            {
+                Id = 1,
+                PhoneNumber = "541 969 2951",
+                CarPlate = "EY 146",
+                FullName = "Servet",
+                Mail = "mservetankarali@gmail.com",
+                IdentityNumber = "48704870487",
+                IsCarOwner = true,
+                IsDeleted = false,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
+            };
+
+            builder.HasData(testOccupant);
         }
     }
 }
